@@ -69,6 +69,7 @@ EnderEchoing 仍保持可选兼容，反过来也一样。
 - `client.api.CalibratedShriekerClientEffectRegistry`
 - `client.api.GeoBoneOverlayLayer`（GeckoLib 骨骼贴图覆盖机制；骨骼名、UV 与贴图必须按目标模型制作）
 - `client.api.ParticleOrbit`（任意实体的客户端粒子环绕，使用真实粒子而非模型贴图）
+- `client.api.PixelWhisperAura`（程序化像素残影带，不依赖模型骨骼、UV 或专用贴图）
 
 ## 客户端效果复用
 
@@ -78,9 +79,9 @@ GeckoLib 模型如果有一根需要独立贴图的骨骼（这是通用机制�
 addRenderLayer(new GeoBoneOverlayLayer<>(this, List.of("your_bone"), yourModelTexture));
 ```
 
-Creesper 的 `creeper_whisper.png` 是 48×1536 的单帧资源，按 Creesper 的骨骼 UV 制作，
-不能直接换到别的实体上；Creesper 层因此显式传 `animatedTexture = false`。
-如果某张贴图确实包含多帧动画，再传 `true`，它会通过 `AnimatableTexture` 推帧；
+Creesper 的 `creeper_whisper.png` 是 48×1536 的 32 帧纵向动态图集，按 Creesper 的骨骼 UV 制作，
+不能直接换到别的实体上，因此 Creesper 层使用默认的 `animatedTexture = true`，
+由 `AnimatableTexture` 推进图集帧；非动态贴图才需要显式传 `false`。
 每个实体需要不同贴图时，第三个参数可以传 `Function<T, ResourceLocation>`。
 
 如果只是想要任意客户端实体（包括原版实体）的粒子环绕，可以用真实粒子 API；
@@ -90,6 +91,18 @@ Creesper 的 `creeper_whisper.png` 是 48×1536 的单帧资源，按 Creesper �
 ParticleOrbit.attach(entity, new ParticleOrbit.Spec(
         ParticleTypes.SCULK_SOUL, 6, 0.8, 0.2, 0.12, 0.08, 0.05));
 ```
+
+如果要在任意实体上复现 Creesper 那种上下两排、断续闪烁的像素残影，而不复用 Creesper
+贴图及其 UV，可以使用 `PixelWhisperAura`。它直接把暗蓝横纹与青色像素端点画成围绕实体
+包围盒的四片薄带：
+
+```java
+PixelWhisperAura.attach(entity, PixelWhisperAura.DEFAULT);
+```
+
+`Spec` 可分别控制高度比例、垂直中心、外扩距离、每排像素数、换帧间隔、帧数和透明度。
+默认是 18 行布局：下方 7 行、中央空 5 行、上方 5 行，并每 3 tick 重新生成一组图案。
+它复现的是视觉语言和节奏，不会读取或复用 `whisper.png` / `creeper_whisper.png` 的像素。
 
 ## 构建
 
