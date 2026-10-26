@@ -67,6 +67,23 @@ EnderEchoing 仍保持可选兼容，反过来也一样。
 - `api.block.CalibratedShriekerMechanism(s)`
 - `api.event.SculkVeilEvent` / `SculkBloomEvent`
 - `client.api.CalibratedShriekerClientEffectRegistry`
+- `client.api.GeoBoneOverlayLayer`（任意 GeckoLib 模型的骨骼贴图覆盖层）
+- `client.api.ParticleOrbit`（任意实体的客户端粒子环绕）
+
+## 客户端效果复用
+
+GeckoLib 模型如果有一根需要独立贴图的骨骼：
+
+```java
+addRenderLayer(new GeoBoneOverlayLayer<>(this, List.of("whisper"), texture));
+```
+
+任意客户端实体（包括原版实体）需要世界空间粒子环绕时：
+
+```java
+ParticleOrbit.attach(entity, new ParticleOrbit.Spec(
+        ParticleTypes.SCULK_SOUL, 6, 0.8, 0.2, 0.12, 0.08, 0.05));
+```
 
 ## 构建
 
