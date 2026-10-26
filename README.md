@@ -16,6 +16,8 @@
 会把它替换成 `sculkbaselib:calibrated_sculk_shrieker`。该交互现在在库里，
 因此只装 EnderEchoing + sculkbaselib 时也能完成整条幽匿核心循环。
 
+手持回响碎片右键幽匿催发体，会在其上方种下一阶段回响晶簇；这条种植交互也由本库统一处理。
+
 ## 依赖关系
 
 ```text
