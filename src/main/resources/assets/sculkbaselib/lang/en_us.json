@@ -1,0 +1,23 @@
+{
+  "itemGroup.sculkbaselib.sculk_core": "Sculk Core",
+  "block.sculkbaselib.echo_druse_block": "Echo Druse",
+  "block.sculkbaselib.echo_druse_block.tooltip": "Stage: %s",
+  "block.sculkbaselib.calibrated_sculk_shrieker": "Calibrated Sculk Shrieker",
+  "item.sculkbaselib.echo_druse": "Echo Druse",
+  "item.sculkbaselib.echo_druse_stage1": "Echo Druse",
+  "item.sculkbaselib.echo_druse_stage2": "Echo Druse",
+  "item.sculkbaselib.echo_druse_stage3": "Echo Druse",
+  "item.sculkbaselib.echo_druse_stage4": "Echo Druse",
+  "item.sculkbaselib.calibrated_sculk_shrieker": "Calibrated Sculk Shrieker",
+  "item.sculkbaselib.rhyme_shard": "Rhyme Shard",
+  "effect.sculkbaselib.sculk_veil": "Sculk Veil",
+  "config.sculkbaselib.configuration.sculk_veil_darkness_duration": "Sculk Veil Darkness duration",
+  "config.sculkbaselib.configuration.sculk_veil_glowing_duration": "Sculk Veil Glowing duration",
+  "config.sculkbaselib.configuration.sculk_veil_player_darkness_ticks": "Player permanent Darkness threshold",
+  "config.sculkbaselib.configuration.sculk_veil_mob_darkness_ticks": "Mob permanent Darkness threshold",
+  "config.sculkbaselib.configuration.echo_druse_max_growth_value": "Echo Druse maximum growth",
+  "config.sculkbaselib.configuration.sculk_shrieker_can_summon_chance": "Shrieker CAN_SUMMON chance",
+  "item.minecraft.potion.effect.glowing": "Potion of Glowing",
+  "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
+  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing"
+}

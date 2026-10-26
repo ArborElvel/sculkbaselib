@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "com.unddefined.sculkbaselib.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CatalystListenerMixin",
+    "EntityMixin"
+  ],
+  "client": [
+    "ChannelAccessor",
+    "FogDataAccessor",
+    "FogRendererMixin",
+    "IrisDarknessFactorMixin",
+    "LivingEntityEffectMixin"
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "itemGroup.sculkbaselib.sculk_core": "幽匿核心",
+  "block.sculkbaselib.echo_druse_block": "回响晶簇",
+  "block.sculkbaselib.echo_druse_block.tooltip": "阶段: %s",
+  "block.sculkbaselib.calibrated_sculk_shrieker": "校频幽匿尖啸体",
+  "item.sculkbaselib.echo_druse": "回响晶簇",
+  "item.sculkbaselib.echo_druse_stage1": "回响晶簇",
+  "item.sculkbaselib.echo_druse_stage2": "回响晶簇",
+  "item.sculkbaselib.echo_druse_stage3": "回响晶簇",
+  "item.sculkbaselib.echo_druse_stage4": "回响晶簇",
+  "item.sculkbaselib.calibrated_sculk_shrieker": "校频幽匿尖啸体",
+  "item.sculkbaselib.rhyme_shard": "龙韵碎片",
+  "effect.sculkbaselib.sculk_veil": "影匿",
+  "config.sculkbaselib.configuration.sculk_veil_darkness_duration": "影匿黑暗效果持续时间",
+  "config.sculkbaselib.configuration.sculk_veil_glowing_duration": "影匿发光效果持续时间",
+  "config.sculkbaselib.configuration.sculk_veil_player_darkness_ticks": "玩家永久黑暗触发刻数",
+  "config.sculkbaselib.configuration.sculk_veil_mob_darkness_ticks": "生物永久黑暗触发刻数",
+  "config.sculkbaselib.configuration.echo_druse_max_growth_value": "回响晶簇最大成长值",
+  "config.sculkbaselib.configuration.sculk_shrieker_can_summon_chance": "尖啸体获得召唤能力的概率",
+  "item.minecraft.potion.effect.glowing": "发光药水",
+  "item.minecraft.splash_potion.effect.glowing": "喷溅型发光药水",
+  "item.minecraft.lingering_potion.effect.glowing": "滞留型发光药水"
+}

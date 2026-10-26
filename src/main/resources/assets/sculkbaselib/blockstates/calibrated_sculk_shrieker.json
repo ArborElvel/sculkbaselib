@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    },
+    "facing=south": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    },
+    "facing=east": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    },
+    "facing=west": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    },
+    "facing=up": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    },
+    "facing=down": {
+      "model": "sculkbaselib:block/calibrated_sculk_shrieker"
+    }
+  }
+}
