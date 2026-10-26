@@ -31,9 +31,9 @@ import java.util.function.Predicate;
  * {@link RenderType} batch in the middle of the model, which can drop later
  * bones when an outline buffer source is active.
  *
- * <p>This layer works for any GeckoLib model that has the named overlay bones;
- * vanilla/non-GeckoLib renderers should use a world-space particle or overlay
- * renderer instead.
+ * <p>This is a generic mechanism, not a generic asset: bone names, UVs and the
+ * texture must be authored for the target model. Vanilla/non-GeckoLib renderers
+ * should use a world-space particle or overlay renderer instead.
  *
  * <p>Textures with an {@code .mcmeta} animation are advanced through GeckoLib's
  * {@link AnimatableTexture}. A function can return a different texture for each
@@ -55,6 +55,12 @@ public class GeoBoneOverlayLayer<T extends GeoAnimatable> extends FastBoneFilter
     public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones,
                                Function<T, ResourceLocation> texture) {
         this(renderer, bones, texture, animatable -> true, RenderType::entityTranslucent, true);
+    }
+
+    public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones,
+                               ResourceLocation texture, boolean animatedTexture) {
+        this(renderer, bones, animatable -> texture, animatable -> true,
+                RenderType::entityTranslucent, animatedTexture);
     }
 
     public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones,

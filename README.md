@@ -67,21 +67,24 @@ EnderEchoing 仍保持可选兼容，反过来也一样。
 - `api.block.CalibratedShriekerMechanism(s)`
 - `api.event.SculkVeilEvent` / `SculkBloomEvent`
 - `client.api.CalibratedShriekerClientEffectRegistry`
-- `client.api.GeoBoneOverlayLayer`（任意 GeckoLib 模型的骨骼贴图覆盖层）
-- `client.api.ParticleOrbit`（任意实体的客户端粒子环绕）
+- `client.api.GeoBoneOverlayLayer`（GeckoLib 骨骼贴图覆盖机制；骨骼名、UV 与贴图必须按目标模型制作）
+- `client.api.ParticleOrbit`（任意实体的客户端粒子环绕，使用真实粒子而非模型贴图）
 
 ## 客户端效果复用
 
-GeckoLib 模型如果有一根需要独立贴图的骨骼：
+GeckoLib 模型如果有一根需要独立贴图的骨骼（这是通用机制，不是通用贴图）：
 
 ```java
-addRenderLayer(new GeoBoneOverlayLayer<>(this, List.of("whisper"), texture));
+addRenderLayer(new GeoBoneOverlayLayer<>(this, List.of("your_bone"), yourModelTexture));
 ```
 
-贴图带 `.mcmeta` 时会自动通过 `AnimatableTexture` 推帧；如果每个实体要换贴图，
-第三个参数可以传 `Function<T, ResourceLocation>`。
+Creesper 的 `creeper_whisper.png` 是 48×1536 的单帧资源，按 Creesper 的骨骼 UV 制作，
+不能直接换到别的实体上；Creesper 层因此显式传 `animatedTexture = false`。
+如果某张贴图确实包含多帧动画，再传 `true`，它会通过 `AnimatableTexture` 推帧；
+每个实体需要不同贴图时，第三个参数可以传 `Function<T, ResourceLocation>`。
 
-任意客户端实体（包括原版实体）需要世界空间粒子环绕时：
+如果只是想要任意客户端实体（包括原版实体）的粒子环绕，可以用真实粒子 API；
+它不会复现 whisper 的骨骼外壳：
 
 ```java
 ParticleOrbit.attach(entity, new ParticleOrbit.Spec(
