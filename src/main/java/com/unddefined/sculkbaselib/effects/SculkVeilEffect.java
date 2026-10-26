@@ -49,7 +49,11 @@ public class SculkVeilEffect extends MobEffect {
             }
             livingEntity.setData(DataRegistry.SCULK_VEIL_START, now);
             livingEntity.setData(DataRegistry.SCULK_VEIL_LAST_TICK, now);
-            if (total >= darknessLine(livingEntity)) applyPermanentDarkness(livingEntity);
+            if (!(livingEntity instanceof Player)
+                    && !livingEntity.hasEffect(MobEffects.DARKNESS)
+                    && total >= darknessLine(livingEntity)) {
+                applyPermanentDarkness(livingEntity);
+            }
             NeoForge.EVENT_BUS.post(new SculkVeilEvent.Applied(livingEntity));
         }
         // 发光的生物不保留影匿
@@ -87,7 +91,9 @@ public class SculkVeilEffect extends MobEffect {
             long glowingTotal = entity.getData(DataRegistry.GLOWING_TOTAL);
             long glowingStart = entity.getData(DataRegistry.GLOWING_START);
             if (glowingStart >= 0) glowingTotal += now - glowingStart + 1;
-            if (start >= 0 && entity.getData(DataRegistry.SCULK_VEIL_TOTAL) + now - start + 1 - glowingTotal
+            // Players are handled once per tick by SculkBaseEvents; mobs use the effect tick.
+            if (!(entity instanceof Player) && !entity.hasEffect(MobEffects.DARKNESS)
+                    && start >= 0 && entity.getData(DataRegistry.SCULK_VEIL_TOTAL) + now - start + 1 - glowingTotal
                     >= darknessLine(entity)) {
                 entity.setData(DataRegistry.SCULK_VEIL_TOTAL, darknessLine(entity));
                 applyPermanentDarkness(entity);
