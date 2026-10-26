@@ -3,7 +3,6 @@ package com.unddefined.sculkbaselib;
 import com.mojang.logging.LogUtils;
 import com.unddefined.sculkbaselib.server.registry.BlockEntityRegistry;
 import com.unddefined.sculkbaselib.server.registry.BlockRegistry;
-import com.unddefined.sculkbaselib.server.registry.CreativeModeTabRegistry;
 import com.unddefined.sculkbaselib.server.registry.DataRegistry;
 import com.unddefined.sculkbaselib.server.registry.ItemRegistry;
 import com.unddefined.sculkbaselib.server.registry.MobEffectRegistry;
@@ -30,7 +29,6 @@ public class SculkBaseLib {
         BlockRegistry.BLOCKS.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
-        CreativeModeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
         MobEffectRegistry.MOB_EFFECTS.register(modEventBus);
         PotionRegistry.POTIONS.register(modEventBus);
         DataRegistry.ATTACHMENT_TYPES.register(modEventBus);
