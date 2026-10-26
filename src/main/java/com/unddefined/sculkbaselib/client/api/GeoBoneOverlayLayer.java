@@ -19,6 +19,7 @@ import software.bernie.geckolib.renderer.layer.FastBoneFilterGeoLayer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -33,20 +34,31 @@ import java.util.function.Predicate;
  * <p>This layer works for any GeckoLib model that has the named overlay bones;
  * vanilla/non-GeckoLib renderers should use a world-space particle or overlay
  * renderer instead.
+ *
+ * <p>Textures with an {@code .mcmeta} animation are advanced through GeckoLib's
+ * {@link AnimatableTexture}. A function can return a different texture for each
+ * animatable when the overlay texture is not shared.
  */
 public class GeoBoneOverlayLayer<T extends GeoAnimatable> extends FastBoneFilterGeoLayer<T> {
     private final List<String> bones;
-    private final ResourceLocation texture;
+    private final Function<T, ResourceLocation> texture;
     private final Predicate<T> visible;
     private final Function<ResourceLocation, RenderType> renderTypeFactory;
     private final boolean animatedTexture;
     private final Map<String, BonePose> poses = new LinkedHashMap<>();
 
     public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones, ResourceLocation texture) {
+        this(renderer, bones, animatable -> texture, animatable -> true,
+                RenderType::entityTranslucent, true);
+    }
+
+    public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones,
+                               Function<T, ResourceLocation> texture) {
         this(renderer, bones, texture, animatable -> true, RenderType::entityTranslucent, true);
     }
 
-    public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones, ResourceLocation texture,
+    public GeoBoneOverlayLayer(GeoRenderer<T> renderer, List<String> bones,
+                               Function<T, ResourceLocation> texture,
                                Predicate<T> visible, Function<ResourceLocation, RenderType> renderType,
                                boolean animatedTexture) {
         super(renderer, () -> List.copyOf(bones), (bone, animatable, partialTick) -> {
@@ -56,7 +68,7 @@ public class GeoBoneOverlayLayer<T extends GeoAnimatable> extends FastBoneFilter
             bone.setChildrenHidden(false);
         });
         this.bones = List.copyOf(bones);
-        this.texture = texture;
+        this.texture = Objects.requireNonNull(texture, "texture");
         this.visible = visible;
         this.renderTypeFactory = renderType;
         this.animatedTexture = animatedTexture;
@@ -89,9 +101,11 @@ public class GeoBoneOverlayLayer<T extends GeoAnimatable> extends FastBoneFilter
                        int packedLight, int packedOverlay) {
         if (poses.isEmpty() || buffer == null || !visible.test(animatable)) return;
 
-        if (animatedTexture) AnimatableTexture.setAndUpdate(texture);
+        ResourceLocation overlayTexture = texture.apply(animatable);
+        if (overlayTexture == null) return;
+        if (animatedTexture) AnimatableTexture.setAndUpdate(overlayTexture);
         int colour = getRenderer().getRenderColor(animatable, partialTick, packedLight).argbInt();
-        VertexConsumer overlayBuffer = bufferSource.getBuffer(renderTypeFactory.apply(texture));
+        VertexConsumer overlayBuffer = bufferSource.getBuffer(renderTypeFactory.apply(overlayTexture));
 
         for (BonePose bonePose : poses.values()) {
             poseStack.pushPose();

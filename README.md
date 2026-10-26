@@ -78,6 +78,9 @@ GeckoLib 模型如果有一根需要独立贴图的骨骼：
 addRenderLayer(new GeoBoneOverlayLayer<>(this, List.of("whisper"), texture));
 ```
 
+贴图带 `.mcmeta` 时会自动通过 `AnimatableTexture` 推帧；如果每个实体要换贴图，
+第三个参数可以传 `Function<T, ResourceLocation>`。
+
 任意客户端实体（包括原版实体）需要世界空间粒子环绕时：
 
 ```java
