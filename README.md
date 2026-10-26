@@ -100,7 +100,8 @@ ParticleOrbit.attach(entity, new ParticleOrbit.Spec(
 PixelWhisperAura.attach(entity, PixelWhisperAura.DEFAULT);
 ```
 
-`Spec` 可分别控制高度比例、垂直中心、外扩距离、每排像素数、换帧间隔、帧数和透明度。
+`Spec` 可分别控制高度比例、相对实体中点的垂直偏移、外扩距离、每排像素数、换帧间隔、帧数和透明度。
+残影带以实体包围盒中心为锚点，默认偏移为 0，因此上下两排围绕中心对称展开。
 默认是 18 行布局：下方 7 行、中央空 5 行、上方 5 行，并每 3 tick 重新生成一组图案。
 它复现的是视觉语言和节奏，不会读取或复用 `whisper.png` / `creeper_whisper.png` 的像素。
 

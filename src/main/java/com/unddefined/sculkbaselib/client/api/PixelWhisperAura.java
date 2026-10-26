@@ -31,14 +31,11 @@ import java.util.WeakHashMap;
  */
 @EventBusSubscriber(modid = SculkBaseLib.MODID, value = Dist.CLIENT)
 public final class PixelWhisperAura {
-    public record Spec(float bandHeightFactor, float verticalCenterFactor, float horizontalPadding,
+    public record Spec(float bandHeightFactor, float verticalOffsetFactor, float horizontalPadding,
                        int columns, int frameTicks, int frameCount, int opacity, long seed) {
         public Spec {
             if (bandHeightFactor <= 0.0F) {
                 throw new IllegalArgumentException("bandHeightFactor must be > 0");
-            }
-            if (verticalCenterFactor < 0.0F) {
-                throw new IllegalArgumentException("verticalCenterFactor must be >= 0");
             }
             if (horizontalPadding < 0.0F) {
                 throw new IllegalArgumentException("horizontalPadding must be >= 0");
@@ -59,7 +56,7 @@ public final class PixelWhisperAura {
     }
 
     public static final Spec DEFAULT = new Spec(
-            0.38F, 0.43F, 0.035F,
+            0.38F, 0.0F, 0.035F,
             16, 3, 39, 235,
             0x53434C4B5F5748L);
 
@@ -103,7 +100,7 @@ public final class PixelWhisperAura {
 
         float entityHeight = Math.max(entity.getBbHeight(), 0.05F);
         float bandHeight = entityHeight * spec.bandHeightFactor();
-        float centerY = entityHeight * spec.verticalCenterFactor();
+        float centerY = entityHeight * (0.5F + spec.verticalOffsetFactor());
         float panelWidth = Math.max(entity.getBbWidth(), 0.05F) + spec.horizontalPadding() * 2.0F;
         float halfPanel = panelWidth * 0.5F;
         float rowHeight = bandHeight / ROWS;
