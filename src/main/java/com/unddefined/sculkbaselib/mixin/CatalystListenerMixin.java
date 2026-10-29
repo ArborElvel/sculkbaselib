@@ -11,21 +11,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.SculkCatalystBlock;
 import net.minecraft.world.level.block.SculkShriekerBlock;
+import net.minecraft.world.level.block.SculkSpreader;
 import net.minecraft.world.level.block.entity.SculkShriekerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.PositionSource;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -39,9 +39,19 @@ import java.util.Optional;
 @Mixin(targets = "net/minecraft/world/level/block/entity/SculkCatalystBlockEntity$CatalystListener")
 public class CatalystListenerMixin {
 
+    @Unique
+    private static final int DRUSE_GROWTH_SPAWN_COST = 5;
+    @Unique
+    private static final int DRUSE_NO_GROWTH_RADIUS = 2;
+
     @Final
     @Shadow
     private PositionSource positionSource;
+
+    @Mutable
+    @Final
+    @Shadow
+    SculkSpreader sculkSpreader;
 
     @Inject(method = "handleGameEvent", at = @At("HEAD"), cancellable = true)
     private void sculkbaselib$handleGameEvent(ServerLevel level, Holder<GameEvent> gameEvent,
@@ -74,7 +84,7 @@ public class CatalystListenerMixin {
         if (aboveState.getBlock() == BlockRegistry.ECHO_DRUSE.get()
                 && level.getBlockEntity(catalystPos.above()) instanceof EchoDruseBlockEntity echoDruse) {
             int maxGrowth = Config.ECHO_DRUSE_MAX_GROWTH_VALUE.get();
-            if (echoDruse.getGrowthValue() <= maxGrowth) {
+            if (echoDruse.getGrowthValue() < maxGrowth) {
                 echoDruse.setGrowthValue(echoDruse.getGrowthValue() + experienceReward);
                 livingEntity.skipDropExperience();
                 sculkbaselib$bloom(level, catalystPos);
@@ -84,6 +94,15 @@ public class CatalystListenerMixin {
                         level, catalystPos.above(), echoDruse.getGrowthValue(), source));
                 cir.setReturnValue(true);
                 return;
+            }
+
+            // Replacing an active spreader would discard its pending cursors.
+            if (this.sculkSpreader.getCursors().isEmpty()
+                    && (this.sculkSpreader.growthSpawnCost() != DRUSE_GROWTH_SPAWN_COST
+                    || this.sculkSpreader.noGrowthRadius() != DRUSE_NO_GROWTH_RADIUS)) {
+                this.sculkSpreader = new SculkSpreader(
+                        false, BlockTags.SCULK_REPLACEABLE, DRUSE_GROWTH_SPAWN_COST,
+                        DRUSE_NO_GROWTH_RADIUS, 5, 5);
             }
         }
 
